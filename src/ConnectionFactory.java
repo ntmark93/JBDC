@@ -15,32 +15,6 @@ public class ConnectionFactory {
     }
 
     public static void main(String[] args) throws SQLException {
-        /*
-        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM info");
-        System.out.println(userDAO.getAllUsers());
-        System.out.println(userDAO.getUser(3));
-        System.out.println(userDAO.updatePassword(3, "'tesztImre'"));
-        ResultSet resultSet = ps.executeQuery();
-
-        System.out.println(userDAO.getUserByName("'Zámbó Imre'"));
-        System.out.println(userDAO.deleteUser(4));
-        ps.executeUpdate("INSERT INTO info (name, password, age)VALUES" +
-                "('Test Lajos', 'LajcsiARajcsi',1)");
-
-        //ps.executeUpdate("UPDATE info SET password = 'bumm00'");
-
-        /*try (Statement statement = getConnection().createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM info")) {
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("name"));
-                System.out.println(resultSet.getString("password"));
-                System.out.println(resultSet.getInt("age"));
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-
-         */
         getConnection();
         UserDAOImpl userDAO = new UserDAOImpl();
         userDAO.getAllUsers();
