@@ -4,10 +4,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 public class UserDAOImpl implements UserDAO {
-    Set<User> allUsers =  new HashSet<>();
+    Set<User> allUsers = new HashSet<>();
+
     @Override
     public Optional<User> getUser(int id) {
         try (Statement st = ConnectionFactory.getConnection().createStatement();
@@ -54,10 +56,10 @@ public class UserDAOImpl implements UserDAO {
         return Optional.empty();
     }
 
-    public boolean deleteUser (int id){
+    public boolean deleteUser(int id) {
         try (Statement st = ConnectionFactory.getConnection().createStatement();
-             ResultSet rs = st.executeQuery("SELECT * FROM info WHERE id =" + id)){
-            if (rs.next()){
+             ResultSet rs = st.executeQuery("SELECT * FROM info WHERE id =" + id)) {
+            if (rs.next()) {
                 int b = st.executeUpdate("DELETE FROM info WHERE id=" + id);
                 return true;
             }
@@ -72,7 +74,7 @@ public class UserDAOImpl implements UserDAO {
         try (Statement st = ConnectionFactory.getConnection().createStatement();
              ResultSet rs = st.executeQuery("SELECT * FROM info")) {
             if (rs.next()) {
-               allUsers.add(new User(rs.getInt("id"),
+                allUsers.add(new User(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("password"),
                         rs.getInt("age")));
@@ -81,5 +83,24 @@ public class UserDAOImpl implements UserDAO {
             throw new RuntimeException(e);
         }
         return allUsers;
+    }
+
+    public boolean generateNewPassword(int id) {
+        Random newPassword = new Random();
+        int first = newPassword.nextInt(1000, 9999);
+        int second = newPassword.nextInt(1000, 9999);
+        int third = newPassword.nextInt(1000, 9999);
+        try (Statement st = ConnectionFactory.getConnection().createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM info WHERE id =" + id)) {
+            if (rs.next()) {
+                int b = st.executeUpdate("UPDATE info SET password =" + first + second + third);
+                if (b != 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 }

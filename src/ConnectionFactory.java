@@ -27,7 +27,8 @@ public class ConnectionFactory {
                     "3. Search user by name\n" +
                     "4. Change password\n" +
                     "5. Delete user\n" +
-                    "6. Exit");
+                    "6. Generate new password\n" +
+                    "7. Exit");
             Scanner scanner = new Scanner(System.in);
             int choice = scanner.nextInt();
             switch (choice) {
@@ -51,7 +52,11 @@ public class ConnectionFactory {
                     System.out.println("Please enter the user name to delete");
                     System.out.println(userDAO.deleteUser(scanner.nextInt()));
                     break;
-                case 6:
+                case  6:
+                    System.out.println("Please enter the user ID to update the password");
+                    System.out.println(userDAO.generateNewPassword(scanner.nextInt()));
+                    break;
+                case 7:
                     System.out.println("Have a nice day");
                     b = true;
             }
